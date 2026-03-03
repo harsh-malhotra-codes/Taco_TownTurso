@@ -82,6 +82,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db");
+const { sendNewOrderNotification } = require("../notify");
 
 /* =========================
    GET ALL ORDERS
@@ -135,9 +136,13 @@ router.post("/", async (req, res) => {
       ],
     });
 
+    const orderId = result.lastInsertRowid.toString();
+
+    await sendNewOrderNotification(orderId);
+
     res.status(201).json({
       message: "Order created successfully",
-      orderId: result.lastInsertRowid.toString(),
+      orderId: orderId,
     });
 
   } catch (err) {

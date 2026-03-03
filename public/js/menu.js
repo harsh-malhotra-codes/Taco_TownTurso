@@ -1,4 +1,4 @@
-import { API_URL } from './config.js';
+// import { API_URL } from './config.js';
 
 // DOM Elements
 const navbar = document.querySelector('.navbar');
@@ -76,7 +76,7 @@ async function init() {
 // Fetch menu data from backend
 async function loadMenuData() {
     try {
-        const response = await fetch(`${API_URL}/api/menu`);
+        const response = await fetch('/api/menu');
         const result = await response.json();
         if (result.success) {
             menuData = result.data;

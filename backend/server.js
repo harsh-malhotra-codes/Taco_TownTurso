@@ -5,6 +5,7 @@ const cors = require("cors");
 const path = require("path");
 
 const orderRoutes = require("./routes/order");
+const pushRoutes = require("./routes/push");
 const menuData = require("./menu-data");
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 /* ================= API ROUTES ================= */
 
 app.use("/orders", orderRoutes);
+app.use("/api", pushRoutes);
 
 app.get("/api/menu", (req, res) => {
   res.json({ success: true, data: menuData });

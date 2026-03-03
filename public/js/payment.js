@@ -1,4 +1,4 @@
-import { API_URL } from './config.js';
+// import { API_URL } from './config.js';
 
 // Payment Page JavaScript
 document.addEventListener('DOMContentLoaded', function() {
@@ -443,7 +443,7 @@ async function saveOrderToBackend(orderId, orderData) {
         console.log("Sending order to backend:", backendOrderData);
 
         // Use the centralized API_URL from config.js
-        const endpoint = `${API_URL}/orders`;
+        const endpoint = `/orders`;
 
         console.log("Using endpoint:", endpoint);
 

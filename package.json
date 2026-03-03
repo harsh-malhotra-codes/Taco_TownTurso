@@ -8,5 +8,9 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.17.0",
+    "expo-server-sdk": "^6.0.0"
   }
 }
