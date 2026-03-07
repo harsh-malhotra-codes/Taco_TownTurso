@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../turso");
-const crypto = require("crypto");
 
 router.post("/register-push-token", async (req, res) => {
   try {
@@ -11,11 +10,13 @@ router.post("/register-push-token", async (req, res) => {
       return res.status(400).json({ error: "Token is required" });
     }
 
-    const id = crypto.randomUUID();
-
     await db.execute({
-      sql: "INSERT OR IGNORE INTO push_tokens (id, token) VALUES (?, ?)",
-      args: [id, token],
+      sql: `
+        INSERT INTO push_tokens (token)
+        VALUES (?)
+        ON CONFLICT(token) DO NOTHING
+      `,
+      args: [token],
     });
 
     res.json({ success: true });
