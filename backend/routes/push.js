@@ -10,16 +10,18 @@ router.post("/register-push-token", async (req, res) => {
       return res.status(400).json({ error: "Token is required" });
     }
 
+    // Insert token with generated id
     await db.execute({
       sql: `
-        INSERT INTO push_tokens (token)
-        VALUES (?)
+        INSERT INTO push_tokens (id, token)
+        VALUES (?, ?)
         ON CONFLICT(token) DO NOTHING
       `,
-      args: [token],
+      args: [Date.now().toString(), token],
     });
 
     res.json({ success: true });
+
   } catch (err) {
     console.error("Push token error:", err);
     res.status(500).json({ error: "Failed to register token" });
