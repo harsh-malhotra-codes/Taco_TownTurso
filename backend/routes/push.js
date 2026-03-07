@@ -4,13 +4,15 @@ const db = require("../turso");
 
 router.post("/register-push-token", async (req, res) => {
   try {
-    const { token } = req.body;
-
-    if (!token) {
-      return res.status(400).json({ error: "Token is required" });
+    // ensure body exists
+    if (!req.body || !req.body.token) {
+      return res.status(400).json({
+        error: "Token is required in request body"
+      });
     }
 
-    // Insert token with generated id
+    const token = req.body.token;
+
     await db.execute({
       sql: `
         INSERT INTO push_tokens (id, token)
