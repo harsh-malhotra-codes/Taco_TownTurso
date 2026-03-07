@@ -14,6 +14,8 @@ const PORT = process.env.PORT || 3000;
 /* ================= MIDDLEWARE ================= */
 
 app.use(cors());
+
+// IMPORTANT: parse JSON request bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
