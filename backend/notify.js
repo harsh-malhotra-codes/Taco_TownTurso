@@ -46,7 +46,19 @@ async function sendNewOrderNotification(orderId) {
 
     for (let chunk of chunks) {
       try {
-        await expo.sendPushNotificationsAsync(chunk);
+        const tickets = await expo.sendPushNotificationsAsync(chunk);
+
+        for (let i = 0; i < tickets.length; i++) {
+          const ticket = tickets[i];
+          if (ticket.status === "error" && ticket.details && ticket.details.error === "DeviceNotRegistered") {
+            const token = chunk[i].to;
+            console.log(`Removing invalid token: ${token}`);
+            await db.execute({
+              sql: "DELETE FROM push_tokens WHERE token = ?",
+              args: [token],
+            });
+          }
+        }
       } catch (error) {
         console.log("Push send error:", error);
       }
