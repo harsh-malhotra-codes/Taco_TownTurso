@@ -138,9 +138,18 @@ router.post("/", async (req, res) => {
 
     const orderId = result.lastInsertRowid.toString();
 
-    await sendNewOrderNotification(orderId);
+    console.log(`[orders] created order ${orderId}. Triggering push notifications.`);
+
+    void sendNewOrderNotification(orderId)
+      .then((pushSummary) => {
+        console.log(`[orders] push dispatch finished for order ${orderId}:`, pushSummary);
+      })
+      .catch((pushError) => {
+        console.error(`[orders] push dispatch failed for order ${orderId}:`, pushError);
+      });
 
     res.status(201).json({
+      success: true,
       message: "Order created successfully",
       orderId: orderId,
     });
